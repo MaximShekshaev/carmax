@@ -13,7 +13,10 @@
           <router-link class="nav-link text-dark hover-primary" to="/">Главная</router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link text-dark hover-primary" to="/my-rent">Моя аренда</router-link>
+          <router-link class="nav-link text-dark hover-primary" to="/myrent">Моя аренда</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link class="nav-link text-dark hover-primary" to="/login">Админ</router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link text-dark hover-primary" to="/login">Вход</router-link>
@@ -21,6 +24,7 @@
         <li class="nav-item">
           <router-link class="btn btn-primary px-3 py-2" to="/register">Регистрация</router-link>
         </li>
+        
       </ul>
 
     </div>
