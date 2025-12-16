@@ -44,7 +44,7 @@ const reviews = ref([
   { id: 3, name: 'Игорь К.', avatar: 'https://via.placeholder.com/50', rating: 5, text: 'Очень удобный сервис. Машину доставили прямо к дому, всё прошло без проблем.' },
 ]);
 
-// Загрузка данных об автомобилях с бэкенда (API)
+
 onMounted(async () => {
   try {
     const response = await axios.get('http://localhost:8000/api/cars');

@@ -1,72 +1,94 @@
 <template>
-  <section class="login-section py-5">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-md-5">
-          <div class="card shadow-sm p-4">
-            <h2 class="text-center mb-4">Вход в аккаунт</h2>
-            <form @submit.prevent="login">
-              <div class="mb-3">
-                <label class="form-label">E-mail или телефон</label>
-                <input type="text" class="form-control" v-model="credentials.user" placeholder="Введите e-mail или телефон" required>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Пароль</label>
-                <input type="password" class="form-control" v-model="credentials.password" placeholder="Введите пароль" required>
-              </div>
-              <button type="submit" class="btn btn-primary w-100">Войти</button>
-            </form>
-            <p class="text-center mt-3">
-  Нет аккаунта? 
-  <router-link to="/register" class="text-primary">Зарегистрироваться</router-link>
-</p>
-          </div>
+  <div class="login-page d-flex justify-content-center align-items-center min-vh-100 bg-light">
+    <div class="card shadow-lg p-5 rounded-4" style="width: 400px;">
+      <h2 class="text-center mb-4 fw-bold text-primary">Вход в аккаунт</h2>
+      <form @submit.prevent="handleLogin" class="d-flex flex-column gap-3">
+        <div>
+          <input
+            v-model="email"
+            type="email"
+            placeholder="Email"
+            required
+            class="form-control form-control-lg"
+          />
         </div>
-      </div>
+        <div>
+          <input
+            v-model="password"
+            type="password"
+            placeholder="Пароль"
+            required
+            class="form-control form-control-lg"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg mt-2">Войти</button>
+      </form>
+      <p class="text-center mt-3">
+        Нет аккаунта? 
+        <router-link to="/register" class="text-primary fw-bold">Зарегистрироваться</router-link>
+      </p>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { login } from "../auth";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useStorage } from "@vueuse/core";
 
-const credentials = ref({
-  user: '',
-  password: ''
-});
+const router = useRouter();
+const email = ref("");
+const password = ref("");
 
-function login() {
-  if (!credentials.value.user || !credentials.value.password) {
-    alert('Пожалуйста, заполните все поля!');
-    return;
+
+const token = useStorage("token", null);
+
+const handleLogin = async () => {
+  try {
+    const { data } = await login({ email: email.value, password: password.value });
+    token.value = data.token; 
+    router.push("/"); 
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.message || "Ошибка при входе");
   }
-}
-
+};
 </script>
 
 <style scoped>
-.login-section {
-  background-color: #f8f9fa;
-  min-height: 80vh;
-  display: flex;
-  align-items: center;
+.login-page {
+  background-color: #f8f9fa; 
 }
 
 .card {
-  border-radius: 12px;
+  background-color: #ffffff;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.card h2 {
-  font-weight: 700;
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
-.btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+input.form-control {
+  border-radius: 0.75rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
 }
 
-.btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
+input.form-control:focus {
+  box-shadow: 0 0 0 0.25rem rgba(37, 117, 252, 0.25);
+  border-color: #2575fc;
+}
+
+button.btn-primary {
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: background 0.3s, transform 0.2s;
+}
+
+button.btn-primary:hover {
+  background: #1f5bcc;
+  transform: translateY(-2px);
 }
 </style>

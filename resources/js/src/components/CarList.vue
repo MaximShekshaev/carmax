@@ -16,7 +16,7 @@
 
         <!-- Контент -->
         <div class="card-body d-flex flex-column">
-          <h5 class="card-title fw-semibold">{{ car.name }}</h5>
+          <h5 class="card-title fw-semibold">{{ car.brand }} {{  car.name }}</h5>
 
           <p class="card-text text-muted small">
             {{ car.description }}
@@ -24,9 +24,9 @@
 
           <div class="mt-auto">
             <div class="d-flex justify-content-between align-items-center mb-3">
-              <span class="text-muted small">Цена за день</span>
+              <h5 class="text-muted small">Цена за день:</h5>
               <span class="fs-5 fw-bold text-primary">
-                {{car.price_per_day}} ₸
+                {{car.price_per_day}} ₸/сутки
               </span>
             </div>
 
