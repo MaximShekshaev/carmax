@@ -5,7 +5,7 @@
     <div class="faq-list">
       <div
         v-for="(item, index) in faqs"
-        :key="index"
+        :key="item.id"
         class="faq-item border-bottom py-3"
       >
         <!-- Вопрос -->
@@ -13,9 +13,8 @@
           class="d-flex justify-content-between align-items-center faq-question"
           @click="toggle(index)"
         >
-          <span class="fs-5">{{ item.q }}</span>
+          <span class="fs-5">{{ item.question }}</span>
 
-          <!-- Иконка -->
           <span
             class="faq-icon"
             :class="{ open: activeIndex === index }"
@@ -26,8 +25,11 @@
 
         <!-- Ответ -->
         <transition name="fade">
-          <div v-if="activeIndex === index" class="mt-3 text-muted">
-            {{ item.a }}
+          <div
+            v-if="activeIndex === index"
+            class="mt-3 text-muted"
+          >
+            {{ item.answer }}
           </div>
         </transition>
       </div>
@@ -36,48 +38,22 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref, onMounted } from 'vue'
+import api from '../services/api'
 
-const activeIndex = ref(0)
-
-const faqs = [
-  {
-    q: "Как арендовать автомобиль?",
-    a: "Выберите автомобиль, укажите даты аренды и оформите заявку онлайн."
-  },
-  {
-    q: "Сколько стоит машина напрокат?",
-    a: "Стоимость зависит от класса автомобиля и срока аренды."
-  },
-  {
-    q: "Можно ли выехать на автомобиле межгород или за границу?",
-    a: "Да, по предварительному согласованию с менеджером."
-  },
-  {
-    q: "Как можно оплатить аренду?",
-    a: "Оплата возможна наличными, банковской картой или переводом."
-  },
-  {
-    q: "Можно ли взять автомобиль в прокат без залога?",
-    a: "Да, для некоторых автомобилей доступна аренда без залога."
-  },
-  {
-    q: "Возможно ли продлить автомобиль, не приезжая в офис?",
-    a: "Да, достаточно связаться с менеджером."
-  },
-  {
-    q: "Какие документы нужны для аренды без водителя?",
-    a: "Паспорт и водительское удостоверение."
-  },
-  {
-    q: "Есть ли у вас доставка автомобиля?",
-    a: "Да, возможна доставка автомобиля по городу."
-  }
-]
+const faqs = ref([])
+const activeIndex = ref(null)
 
 const toggle = (index) => {
   activeIndex.value = activeIndex.value === index ? null : index
 }
+
+const loadFaqs = async () => {
+  const res = await api.get('/faqs')
+  faqs.value = res.data
+}
+
+onMounted(loadFaqs)
 </script>
 
 <style scoped>

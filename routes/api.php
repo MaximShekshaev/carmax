@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CarController;
 use App\Http\Controllers\Api\AuthController; 
 use App\Http\Controllers\Api\RentalConditionController;
 use App\Http\Controllers\Api\ReviewController;
+use App\Http\Controllers\Api\FaqController;
 
 // Маршруты для машин
 Route::get('/cars', [CarController::class, 'index']);
@@ -22,3 +23,7 @@ Route::get('/rental-conditions', [RentalConditionController::class, 'index']);
 // отзывы
 Route::get('/reviews', [ReviewController::class, 'index']);
 Route::post('/reviews', [ReviewController::class, 'store']);
+
+
+// Ответы на частые вопросы
+Route::get('/faqs', [FaqController::class, 'index']);
