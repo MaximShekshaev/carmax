@@ -43,9 +43,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.conditions {
-  background: linear-gradient(180deg, #f8f9fa, #ffffff);
-}
+
 
 /* Карточка */
 .condition-card {
