@@ -8,26 +8,24 @@
       </router-link>
 
       <!-- Навигация -->
-      <ul class="navbar-nav d-flex flex-row gap-3 align-items-center mb-0">
-        <li class="nav-item">
-          <router-link class="nav-link text-dark hover-primary" to="/">Главная</router-link>
-        </li>
+      <div class="d-flex align-items-center gap-3">
+
+        <!-- Общие ссылки -->
+        <router-link class="nav-link text-dark hover-primary" to="/">Главная</router-link>
 
         <!-- Для неавторизованных -->
         <template v-if="!isAuthenticated">
-          <li class="nav-item">
-            <router-link class="nav-link text-dark hover-primary" to="/login">Вход</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link class="btn btn-primary px-3 py-2 rounded" to="/register">Регистрация</router-link>
-          </li>
+          <router-link class="nav-link text-dark hover-primary" to="/login">Вход</router-link>
+          <router-link class="btn btn-primary px-3 py-2 rounded" to="/register">Регистрация</router-link>
         </template>
 
         <!-- Для авторизованных -->
-        <li class="nav-item" v-else>
+        <template v-else>
+          <router-link class="nav-link text-dark hover-primary" to="/my-rentals">Моя аренда</router-link>
           <button class="btn btn-danger px-3 py-2 rounded" @click="handleLogout">Выйти</button>
-        </li>
-      </ul>
+        </template>
+
+      </div>
 
     </div>
   </nav>
@@ -54,9 +52,7 @@ const handleLogout = async () => {
   }
 };
 
-
 const isScrolled = ref(false);
-
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 20; 
 };
@@ -88,7 +84,8 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
   color: #2575fc;
 }
 
-.navbar .btn-primary {
+.navbar .btn-primary,
+.navbar .btn-danger {
   font-weight: 600;
   transition: transform 0.2s, background 0.2s;
 }
@@ -98,17 +95,9 @@ onUnmounted(() => window.removeEventListener('scroll', handleScroll));
   transform: translateY(-1px);
 }
 
-.navbar .btn-outline-danger {
-  font-weight: 600;
-  transition: transform 0.2s, background 0.2s, color 0.2s;
-}
-
-.navbar .btn-outline-danger:hover {
+.navbar .btn-danger:hover {
   background-color: #dc3545;
   color: #fff;
   transform: translateY(-1px);
 }
-
-
-
 </style>

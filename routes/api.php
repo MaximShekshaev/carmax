@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\RentalConditionController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\RentalController;
 
 // Маршруты для машин
 Route::get('/cars', [CarController::class, 'index']);
@@ -27,3 +28,13 @@ Route::post('/reviews', [ReviewController::class, 'store']);
 
 // Ответы на частые вопросы
 Route::get('/faqs', [FaqController::class, 'index']);
+
+
+// Маршрут для создания аренды
+Route::post('/rentals', [RentalController::class, 'store']);
+
+
+// Маршрут для получения аренд пользователя
+Route::get('/rentals', [RentalController::class, 'index']);
+Route::post('/rentals', [RentalController::class, 'store']);
+Route::delete('/rentals/{id}', [RentalController::class, 'destroy']);

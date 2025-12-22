@@ -2,10 +2,12 @@
   <div class="d-flex flex-column min-vh-100">
     <Header />
 
-    <main  class="main-content">
+   
+    <main class="flex-grow-1 main-content">
       <router-view /> 
     </main>
-  <ScrollToTop />
+
+    <ScrollToTop />
     <Footer />
   </div>
 </template>
@@ -18,7 +20,6 @@ import Footer from './components/Footer.vue'
 
 <style scoped>
 .main-content {
-  padding-top: 80px;
+  padding-top: 80px; 
 }
-
 </style>

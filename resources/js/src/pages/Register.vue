@@ -58,7 +58,7 @@ const submit = async () => {
 
 <style scoped>
 .register-page {
-  background-color: #f8f9fa; /* светлый фон страницы */
+  background-color: #f8f9fa; 
 }
 
 .card {

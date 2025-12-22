@@ -22,7 +22,7 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'api_token' => Str::random(60), // токен для авторизации
+            'api_token' => Str::random(60), 
         ]);
 
         return response()->json([
@@ -44,7 +44,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Неверный email или пароль'], 401);
         }
 
-        // Генерация нового токена при каждом входе
+       
         $user->api_token = Str::random(60);
         $user->save();
 

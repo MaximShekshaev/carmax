@@ -6,51 +6,60 @@
       :key="car.id"
     >
       <div class="car-card d-flex flex-column h-100">
-
-        <!-- Фото -->
         <div class="image-wrap">
-          <img
-            :src="car.image"
-            :alt="car.name"
-          />
+          <img :src="car.image" :alt="car.name" />
         </div>
 
-        <!-- Контент -->
         <div class="car-content d-flex flex-column flex-grow-1">
-          <h5 class="fw-semibold mb-2">
-            {{ car.brand }} {{ car.name }}
-          </h5>
-
-          <p class="text-muted small mb-3 flex-grow-1">
-            {{ car.description }}
-          </p>
+          <h5 class="fw-semibold mb-2">{{ car.brand }} {{ car.name }}</h5>
+          <p class="text-muted small mb-3 flex-grow-1">{{ car.description }}</p>
 
           <div class="mt-auto">
             <div class="price-row mb-3">
               <span class="text-muted small">Цена за день</span>
-              <span class="price">
-                {{ car.price_per_day }} ₸ / сутки
-              </span>
+              <span class="price">{{ car.price_per_day }} ₸ / сутки</span>
             </div>
 
-            <button class="btn btn-primary w-100">
+            <button
+              class="btn btn-primary w-100"
+              :disabled="!isLoggedIn"
+              @click="rentCar(car.id)"
+              :title="!isLoggedIn ? 'Войдите, чтобы арендовать' : ''"
+            >
               Арендовать
             </button>
           </div>
         </div>
-
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+import { useStorage } from '@vueuse/core'
+import { computed } from 'vue'
+
 defineProps({
   cars: {
     type: Array,
     required: true
   }
 })
+
+const router = useRouter()
+const token = useStorage('token', null)
+
+
+const isLoggedIn = computed(() => !!token.value)
+
+const rentCar = (carId) => {
+  if (!isLoggedIn.value) {
+    router.push('/login')
+    return
+  }
+  router.push(`/rent/${carId}`)
+}
 </script>
 
 <style scoped>
@@ -58,17 +67,13 @@ defineProps({
   position: relative;
   border-radius: 20px;
   overflow: hidden;
-
   background: linear-gradient(145deg, #ffffff, #f3f4f6);
-
   box-shadow:
     0 10px 25px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-
   transition:
     transform 0.35s ease,
     box-shadow 0.35s ease;
-
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -114,5 +119,10 @@ defineProps({
   font-size: 1.1rem;
   font-weight: 700;
   color: #0d6efd;
+}
+
+button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 </style>

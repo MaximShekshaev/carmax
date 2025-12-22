@@ -18,7 +18,7 @@ return new class extends Migration
         $table->date('start_date');
         $table->integer('days');
         $table->decimal('total', 10, 2);
-        $table->string('status')->default('Активная'); // Активная, Завершена, Отменена
+        $table->string('status')->default('Активная'); 
         $table->timestamps();
     });
 }

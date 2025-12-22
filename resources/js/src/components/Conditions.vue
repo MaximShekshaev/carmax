@@ -45,7 +45,7 @@ onMounted(async () => {
 <style scoped>
 
 
-/* Карточка */
+
 .condition-card {
   position: relative;
   height: 100%;
