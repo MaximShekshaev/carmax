@@ -1,7 +1,7 @@
 <template>
-  <div class="rent-car container py-5">
-    <div class="card rent-card shadow-sm p-4 mx-auto">
-      <h3 class="mb-4 text-center">
+  <div class="rent-car-page d-flex justify-content-center align-items-center min-vh-100 p-4">
+    <div class="card rent-card shadow-lg p-5">
+      <h3 class="mb-4 text-center title">
         Аренда: {{ car.brand }} {{ car.name }}
       </h3>
 
@@ -18,12 +18,12 @@
       <!-- Даты аренды -->
       <div class="mb-3">
         <label class="form-label fw-semibold">Дата начала</label>
-        <input type="date" v-model="startDate" class="form-control" />
+        <input type="date" v-model="startDate" class="form-control dark-input" />
       </div>
 
       <div class="mb-3">
         <label class="form-label fw-semibold">Дата окончания</label>
-        <input type="date" v-model="endDate" class="form-control" />
+        <input type="date" v-model="endDate" class="form-control dark-input" />
       </div>
 
       <!-- Итоговая цена -->
@@ -59,14 +59,15 @@ const loading = ref(false)
 
 const carId = route.params.carId
 
-// Получение данных машины
 onMounted(async () => {
   if (!carId) {
     Swal.fire({
       icon: 'error',
       title: 'Ошибка',
       text: 'Машина не выбрана',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
     router.push('/')
     return
@@ -81,32 +82,31 @@ onMounted(async () => {
       icon: 'error',
       title: 'Ошибка',
       text: 'Ошибка загрузки данных машины',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
     router.push('/')
   }
 })
 
-// Количество дней аренды
 const rentalDays = computed(() => {
   if (!startDate.value || !endDate.value) return 0
   const diff = Math.ceil((new Date(endDate.value) - new Date(startDate.value)) / (1000 * 60 * 60 * 24))
   return diff > 0 ? diff : 0
 })
 
-// Итоговая цена
-const totalPrice = computed(() => {
-  return rentalDays.value * (car.value.price_per_day || 0)
-})
+const totalPrice = computed(() => rentalDays.value * (car.value.price_per_day || 0))
 
-// Подтверждение аренды
 const confirmRent = async () => {
   if (!startDate.value || !endDate.value) {
     return Swal.fire({
       icon: 'warning',
       title: 'Внимание',
       text: 'Выберите даты аренды',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   }
 
@@ -115,7 +115,9 @@ const confirmRent = async () => {
       icon: 'warning',
       title: 'Внимание',
       text: 'Дата окончания должна быть позже даты начала',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   }
 
@@ -135,7 +137,9 @@ const confirmRent = async () => {
       icon: 'success',
       title: 'Успех!',
       text: 'Аренда успешно оформлена',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
     router.push('/my-rentals')
   } catch (err) {
@@ -144,7 +148,9 @@ const confirmRent = async () => {
       icon: 'error',
       title: 'Ошибка',
       text: err.response?.data?.message || 'Ошибка при аренде',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   } finally {
     loading.value = false
@@ -153,22 +159,36 @@ const confirmRent = async () => {
 </script>
 
 <style scoped>
+.rent-car-page {
+  background: #0d0f14;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .rent-card {
   max-width: 500px;
-  border-radius: 20px;
-  background: #ffffff;
+  width: 100%;
+  border-radius: 24px;
+  background: #1b1f27;
+  color: #e5e7eb;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .rent-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 50px rgba(37, 99, 235, 0.5);
+}
+
+.title {
+  color: #3b82f6;
 }
 
 .car-image-wrapper {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .car-image {
@@ -183,8 +203,23 @@ const confirmRent = async () => {
   transform: scale(1.05);
 }
 
+.dark-input {
+  background: #2a2c36;
+  border: none;
+  color: #e5e7eb;
+  border-radius: 12px;
+  padding: 0.5rem 0.75rem;
+}
+
+.dark-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #3b82f6;
+}
+
 .btn-primary {
   font-weight: 600;
+  background: #2563eb;
+  border-radius: 12px;
   transition: transform 0.2s, background 0.2s;
 }
 
@@ -193,13 +228,10 @@ const confirmRent = async () => {
   transform: translateY(-2px);
 }
 
-.form-label {
-  font-weight: 500;
-}
-
 .total-price {
   font-size: 1.2rem;
-  color: #1f5bcc;
+  color: #3b82f6;
   font-weight: 600;
+  text-align: center;
 }
 </style>

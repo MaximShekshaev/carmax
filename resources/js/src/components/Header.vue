@@ -1,103 +1,162 @@
 <template>
-  <nav :class="['navbar', 'navbar-expand-lg', 'navbar-light', 'bg-white', 'py-3', { 'shadow-sm': isScrolled }]" ref="navbar">
+  <nav
+    :class="['navbar', 'navbar-expand-lg', { scrolled: isScrolled }]"
+  >
     <div class="container d-flex justify-content-between align-items-center">
 
-      <!-- Лого -->
-      <router-link class="navbar-brand fw-bold fs-3 text-primary" to="/">
-        CAR<span class="text-dark">MAX</span>
+      <!-- ЛОГО -->
+      <router-link class="navbar-brand" to="/">
+        CAR<span>MAX</span>
       </router-link>
 
-      <!-- Навигация -->
-      <div class="d-flex align-items-center gap-3">
+      <!-- НАВИГАЦИЯ -->
+      <div class="d-flex align-items-center gap-4">
 
-        <!-- Общие ссылки -->
-        <router-link class="nav-link text-dark hover-primary" to="/">Главная</router-link>
+        <router-link class="nav-link" to="/">Главная</router-link>
 
-        <!-- Для неавторизованных -->
+        <!-- ГОСТЬ -->
         <template v-if="!isAuthenticated">
-          <router-link class="nav-link text-dark hover-primary" to="/login">Вход</router-link>
-          <router-link class="btn btn-primary px-3 py-2 rounded" to="/register">Регистрация</router-link>
+          <router-link class="nav-link " to="/login">Вход</router-link>
+          <router-link class="btn btn-accent" to="/register">
+            Регистрация
+          </router-link>
         </template>
 
-        <!-- Для авторизованных -->
+        <!-- АВТОРИЗОВАН -->
         <template v-else>
-          <router-link class="nav-link text-dark hover-primary" to="/my-rentals">Моя аренда</router-link>
-          <button class="btn btn-danger px-3 py-2 rounded" @click="handleLogout">Выйти</button>
+          <router-link class="nav-link" to="/my-rentals">
+            Моя аренда
+          </router-link>
+          <button class="btn btn-outline-danger" @click="handleLogout">
+            Выйти
+          </button>
         </template>
 
       </div>
-
     </div>
   </nav>
 </template>
 
 <script setup>
-import { computed, ref, onMounted, onUnmounted } from "vue";
-import { useStorage } from "@vueuse/core"; 
-import { logout } from "../auth";
-import { useRouter } from "vue-router";
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { useStorage } from '@vueuse/core'
+import { useRouter } from 'vue-router'
+import { logout } from '../auth'
 
-const router = useRouter();
-const token = useStorage("token", null);
-const isAuthenticated = computed(() => !!token.value);
+const router = useRouter()
+const token = useStorage('token', null)
+const isAuthenticated = computed(() => !!token.value)
 
 const handleLogout = async () => {
   try {
-    if (token.value) await logout(token.value);
-  } catch (err) {
-    console.error(err);
+    if (token.value) await logout(token.value)
   } finally {
-    token.value = null;
-    router.push("/");
+    token.value = null
+    router.push('/')
   }
-};
+}
 
-const isScrolled = ref(false);
-const handleScroll = () => {
-  isScrolled.value = window.scrollY > 20; 
-};
+const isScrolled = ref(false)
+const onScroll = () => {
+  isScrolled.value = window.scrollY > 30
+}
 
-onMounted(() => window.addEventListener('scroll', handleScroll));
-onUnmounted(() => window.removeEventListener('scroll', handleScroll));
+onMounted(() => window.addEventListener('scroll', onScroll))
+onUnmounted(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <style scoped>
+
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 999;
-  transition: box-shadow 0.3s, background 0.3s;
-  background: #fff;
+  z-index: 1000;
+  padding: 18px 0;
+  background: rgba(13, 15, 20, 0.9);
+  backdrop-filter: blur(12px);
+  transition: all 0.35s ease;
 }
 
-.navbar.shadow-sm {
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+/* ПРИ СКРОЛЛЕ */
+.navbar.scrolled {
+  background: rgba(10, 12, 18, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-.navbar .nav-link {
+/* ЛОГО */
+.navbar-brand {
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #2563eb;
+  text-transform: uppercase;
+}
+
+.navbar-brand span {
+  color: #ffffff;
+}
+
+/* ССЫЛКИ */
+.nav-link {
+  color: #e5e7eb;
   font-weight: 500;
-  transition: color 0.2s;
+  position: relative;
+  transition: color 0.3s;
 }
 
-.navbar .nav-link.hover-primary:hover {
-  color: #2575fc;
+.nav-link:hover {
+  color: #3b82f6;
 }
 
-.navbar .btn-primary,
-.navbar .btn-danger {
-  font-weight: 600;
-  transition: transform 0.2s, background 0.2s;
+.nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0;
+  height: 2px;
+  background: #3b82f6;
+  transition: width 0.3s ease;
 }
 
-.navbar .btn-primary:hover {
-  background-color: #1f5bcc;
-  transform: translateY(-1px);
+.nav-link:hover::after {
+  width: 100%;
 }
 
-.navbar .btn-danger:hover {
-  background-color: #dc3545;
+.nav-link.muted {
+  color: #9ca3af;
+}
+
+/* КНОПКИ */
+.btn-accent {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
   color: #fff;
-  transform: translateY(-1px);
+  border-radius: 999px;
+  padding: 8px 22px;
+  font-weight: 600;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
+}
+
+.btn-outline-danger {
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-weight: 600;
+  background: transparent;
+  border: 1px solid #ef4444;
+  color: #ef4444;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background: #ef4444;
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
 }
 </style>

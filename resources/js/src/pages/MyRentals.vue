@@ -1,26 +1,27 @@
 <template>
-  <div class="my-rentals container py-5">
-    <h2 class="mb-4 text-center fw-bold">Мои аренды</h2>
+  <div class="my-rentals-page">
+    <div class="big-card p-5" data-aos="fade-up">
+      <h2 class="mb-4 text-center fw-bold">Мои аренды</h2>
 
-    <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Загрузка...</span>
-      </div>
-    </div>
-
-    <div v-else>
-      <div v-if="rentals.length === 0" class="text-center text-muted py-5">
-        У вас пока нет аренд.
+      <div v-if="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Загрузка...</span>
+        </div>
       </div>
 
-      <div class="row g-4">
-        <div
-          v-for="rental in rentals"
-          :key="rental.id"
-          class="col-md-6"
-        >
-          <div class="card rental-card p-4 shadow-sm h-100">
-            <div class="d-flex align-items-center mb-4">
+      <div v-else>
+        <div v-if="rentals.length === 0" class="text-center text-muted py-5">
+          У вас пока нет аренд.
+        </div>
+
+        <div class="rental-cards">
+          <div
+            v-for="rental in rentals"
+            :key="rental.id"
+            class="car-card p-4 mb-4"
+            data-aos="zoom-in"
+          >
+            <div class="d-flex align-items-center mb-3">
               <img
                 :src="rental.car.image"
                 :alt="rental.car.name"
@@ -45,7 +46,7 @@
                 {{ rentalStatus(rental) }}
               </span>
               <button
-                class="btn btn-sm btn-danger cancel-btn"
+                class="btn btn-sm cancel-btn"
                 :disabled="rentalStatus(rental) === 'Завершено'"
                 @click="cancelRental(rental.id)"
               >
@@ -80,12 +81,14 @@ const loadRentals = async () => {
     })
     rentals.value = data
   } catch (err) {
-    console.error(err.response?.data)
+    console.error(err)
     Swal.fire({
       icon: 'error',
       title: 'Ошибка',
       text: err.response?.data?.message || 'Ошибка при загрузке ваших аренд',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   } finally {
     loading.value = false
@@ -99,8 +102,10 @@ const cancelRental = async (rentalId) => {
     showCancelButton: true,
     confirmButtonText: 'Да',
     cancelButtonText: 'Отмена',
-    confirmButtonColor: '#dc3545',
-    cancelButtonColor: '#6c757d'
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#6c757d',
+    background: '#1b1f27',
+    color: '#fff'
   })
   if (!confirmResult.isConfirmed) return
 
@@ -112,15 +117,19 @@ const cancelRental = async (rentalId) => {
     Swal.fire({
       icon: 'success',
       title: 'Аренда отменена',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   } catch (err) {
-    console.error(err.response?.data)
+    console.error(err)
     Swal.fire({
       icon: 'error',
       title: 'Ошибка',
       text: err.response?.data?.message || 'Ошибка при отмене аренды',
-      confirmButtonColor: '#1f5bcc'
+      confirmButtonColor: '#1f5bcc',
+      background: '#1b1f27',
+      color: '#fff'
     })
   }
 }
@@ -130,7 +139,6 @@ onMounted(() => {
   AOS.init({ duration: 700, once: true })
 })
 
-// Статус аренды
 const rentalStatus = (rental) => {
   const today = new Date().toISOString().split('T')[0]
   if (today < rental.start_date) return 'Запланировано'
@@ -145,7 +153,6 @@ const rentalStatusClass = (rental) => {
   return 'badge bg-secondary'
 }
 
-
 const formatDate = (dateStr) => {
   const date = new Date(dateStr)
   const day = String(date.getDate()).padStart(2, '0')
@@ -156,23 +163,40 @@ const formatDate = (dateStr) => {
 </script>
 
 <style scoped>
-.my-rentals h2 {
-  color: #1f5bcc;
-  font-size: 2rem;
+.my-rentals-page {
+  background: #0d0f14;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #e5e7eb;
 }
 
-.rental-card {
-  border-radius: 20px;
-  transition: transform 0.3s, box-shadow 0.3s;
-  min-height: 250px;
+.big-card {
+  background: #1b1f27;
+  border-radius: 24px;
+  padding: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.rental-cards {
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #ffffff, #f0f4ff);
 }
 
-.rental-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+.car-card {
+  background: #2a2c36;
+  border-radius: 20px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.car-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.5);
 }
 
 .rental-img {
@@ -197,19 +221,30 @@ const formatDate = (dateStr) => {
   font-size: 0.85rem;
   padding: 0.35em 0.75em;
   transition: transform 0.2s, box-shadow 0.2s;
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+}
+
+.cancel-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .cancel-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(220,38,38,0.4);
 }
 
 .text-muted {
   font-size: 0.95rem;
+  color: #9ca3af !important;
 }
 
 .spinner-border {
   width: 3rem;
   height: 3rem;
+  color: #2563eb;
 }
 </style>

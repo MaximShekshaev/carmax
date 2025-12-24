@@ -1,6 +1,6 @@
 <template>
   <section class="container py-5">
-    <h2 class="mb-5 text-center fw-bold text-primary">Ответы на частые вопросы</h2>
+    
 
     <div class="row">
       <!-- Левый столбец: FAQ -->
@@ -81,34 +81,53 @@ onMounted(loadFaqs)
   width: 100%;
 }
 
+/* ===== FAQ ITEM ===== */
+.faq-item {
+  background: linear-gradient(160deg, #1b1f27, #0f1218);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
 
+.faq-item:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 30px 60px rgba(37, 99, 235, 0.35);
+}
+
+/* ===== ВОПРОС ===== */
 .faq-question {
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: color 0.3s;
+  color: #e5e7eb;
+  transition: color 0.25s ease;
 }
 
 .faq-question:hover {
-  color: #0d6efd;
+  color: #3b82f6;
 }
 
-
+/* ===== ИКОНКА ===== */
 .faq-icon {
+  font-size: 1.25rem;
+  color: #3b82f6;
   transition: transform 0.3s ease;
-  font-size: 1.2rem;
-  color: #0d6efd;
 }
 
 .faq-icon.open {
   transform: rotate(180deg);
 }
 
-
+/* ===== АНИМАЦИЯ ===== */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease, max-height 0.3s ease;
+  transition: opacity 0.25s ease, max-height 0.25s ease;
 }
 
 .fade-enter-from,
@@ -117,35 +136,44 @@ onMounted(loadFaqs)
   max-height: 0;
 }
 
-.faq-item {
-  background: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  transition: transform 0.3s, box-shadow 0.3s;
+/* ===== ОТВЕТ ===== */
+.faq-item .text-muted {
+  color: #9ca3af !important;
+  line-height: 1.6;
 }
 
-.faq-item:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.12);
-}
-
-
+/* ===== КОНТАКТЫ ===== */
 .contact-panel {
+  background: linear-gradient(160deg, #1b1f27, #0f1218);
+  border-radius: 1.25rem;
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
   display: flex;
   flex-direction: column;
-  justify-content: start;
-  background: #f8f9fa;
+}
+
+.contact-panel h4 {
+  color: #ffffff;
+}
+
+.contact-panel p {
+  color: #d1d5db;
+  font-size: 0.95rem;
 }
 
 .contact-panel p i {
   margin-right: 8px;
+  color: #3b82f6;
 }
 
-.contact-panel button {
-  border-radius: 0.75rem;
-  font-weight: 600;
-  transition: transform 0.2s, background 0.2s;
+/* ===== СОЦСЕТИ ===== */
+.contact-panel a {
+  transition: transform 0.25s ease, color 0.25s ease;
 }
 
-
+.contact-panel a:hover {
+  transform: translateY(-3px);
+  color: #60a5fa !important;
+}
 </style>
