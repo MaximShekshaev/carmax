@@ -13,7 +13,7 @@
       <div class="d-flex align-items-center gap-4">
 
         <router-link class="nav-link" to="/">Главная</router-link>
-
+        <router-link class="nav-link" to="/admin/login">Админ</router-link>
         <!-- ГОСТЬ -->
         <template v-if="!isAuthenticated">
           <router-link class="nav-link " to="/login">Вход</router-link>

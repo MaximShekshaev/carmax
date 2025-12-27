@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->text('message');
-            $table->unsignedTinyInteger('rating'); // 1–5
+            $table->unsignedTinyInteger('rating'); 
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

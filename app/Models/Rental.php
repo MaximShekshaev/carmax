@@ -14,7 +14,7 @@ class Rental extends Model
         'total_price'
     ];
 
-    // Связь с машиной
+    
     public function car()
     {
         return $this->belongsTo(Car::class);

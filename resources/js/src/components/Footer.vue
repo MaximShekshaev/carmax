@@ -60,7 +60,7 @@
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-/* ЛОГО */
+
 .footer-logo {
   font-size: 1.8rem;
   font-weight: 900;
@@ -72,14 +72,14 @@
   color: #ffffff;
 }
 
-/* ТЕКСТ */
+
 .footer-text {
   margin-top: 12px;
   line-height: 1.6;
   max-width: 320px;
 }
 
-/* ЗАГОЛОВКИ */
+
 .footer-title {
   font-weight: 700;
   margin-bottom: 16px;
@@ -87,7 +87,7 @@
   letter-spacing: 0.5px;
 }
 
-/* СПИСКИ */
+
 .footer-list {
   list-style: none;
   padding: 0;
@@ -111,12 +111,12 @@
   color: #3b82f6;
 }
 
-/* ИКОНКИ */
+
 .footer-list i {
   color: #3b82f6;
 }
 
-/* СОЦСЕТИ */
+
 .socials {
   display: flex;
   gap: 16px;
@@ -133,7 +133,7 @@
   transform: translateY(-3px);
 }
 
-/* НИЖНЯЯ ЛИНИЯ */
+
 .footer-bottom {
   text-align: center;
   padding-top: 24px;

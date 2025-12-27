@@ -80,7 +80,7 @@ const rentCar = (carId) => {
   height: 100%;
 }
 
-/* HOVER */
+
 .car-card:hover {
   transform: translateY(-10px);
   box-shadow:
@@ -88,7 +88,7 @@ const rentCar = (carId) => {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* ИЗОБРАЖЕНИЕ */
+
 .image-wrap {
   height: 280px;
   overflow: hidden;
@@ -118,7 +118,7 @@ const rentCar = (carId) => {
   transform: scale(1.08);
 }
 
-/* КОНТЕНТ */
+
 .car-content {
   padding: 26px 24px;
   display: flex;
@@ -127,7 +127,7 @@ const rentCar = (carId) => {
   color: #e5e7eb;
 }
 
-/* ЗАГОЛОВОК */
+
 .car-content h5 {
   font-size: 1.15rem;
   font-weight: 700;
@@ -136,13 +136,13 @@ const rentCar = (carId) => {
   color: #ffffff;
 }
 
-/* ОПИСАНИЕ */
+
 .car-content p {
   color: #ffffff;
   line-height: 1.5;
 }
 
-/* ЦЕНА */
+
 .price-row {
   display: flex;
   justify-content: space-between;
@@ -157,7 +157,7 @@ const rentCar = (carId) => {
   color: #3b82f6;
 }
 
-/* КНОПКА */
+
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   border: none;
@@ -174,7 +174,7 @@ const rentCar = (carId) => {
   transform: translateY(-2px);
 }
 
-/* DISABLED */
+
 button[disabled] {
   background: #1f2937;
   color: #6b7280;

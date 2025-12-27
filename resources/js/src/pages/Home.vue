@@ -53,11 +53,11 @@ import Reviews from '../components/Reviews.vue';
 import Faqs from '../components/Faqs.vue';
 import Welcome from '../components/Welcome.vue';
 
-// Данные для машин
+
 const cars = ref([]);
 
 onMounted(async () => {
-  // Инициализация AOS для анимаций
+  
   AOS.init({ duration: 800, once: true });
 
   try {
@@ -68,7 +68,7 @@ onMounted(async () => {
   }
 });
 
-// Функция плавной прокрутки
+
 const scrollToCars = () => {
   const el = document.getElementById('car-list');
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -82,7 +82,7 @@ const scrollToCars = () => {
   color: #e5e7eb;
 }
 
-/* WELCOME */
+
 .welcome-wrapper {
   height: 100vh;
   width: 100%;
@@ -94,7 +94,7 @@ const scrollToCars = () => {
   overflow: hidden;
 }
 
-/* СЕКЦИИ */
+
 .section-dark {
   margin-top: 5rem;
   padding: 3rem 2rem;
@@ -105,7 +105,7 @@ const scrollToCars = () => {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
-/* ЗАГОЛОВКИ */
+
 .section-title {
   text-align: center;
   margin-bottom: 3rem;
@@ -117,7 +117,7 @@ const scrollToCars = () => {
   position: relative;
 }
 
-/* ЛИНИЯ ПОД ЗАГОЛОВКОМ */
+
 .section-title::after {
   content: '';
   display: block;
@@ -128,12 +128,12 @@ const scrollToCars = () => {
   border-radius: 10px;
 }
 
-/* SCROLL OFFSET */
+
 section {
   scroll-margin-top: 90px;
 }
 
-/* AOS FIX */
+
 [data-aos] {
   will-change: transform, opacity;
 }

@@ -53,7 +53,7 @@ onMounted(() => {
   z-index: 2;
 }
 
-/* ТЕКСТ */
+
 .welcome-text {
   font-size: 1.25rem;
   color: #9ca3af;
@@ -61,7 +61,7 @@ onMounted(() => {
   z-index: 2;
 }
 
-/* КНОПКА */
+
 .btn-accent {
   background: linear-gradient(135deg, #2563eb, #1e40af);
   color: #fff;
@@ -78,7 +78,7 @@ onMounted(() => {
   box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
 }
 
-/* ДЕКОРАТИВНЫЕ ЛИНИИ */
+
 .line {
   position: absolute;
   width: 2px;

@@ -1,5 +1,16 @@
 <template>
   <div class="my-rentals-page">
+
+    
+    <div 
+      v-if="message.text" 
+      class="toast-message" 
+      :class="message.type"
+      data-aos="fade-down"
+    >
+      {{ message.text }}
+    </div>
+
     <div class="big-card p-5" data-aos="fade-up">
       <h2 class="mb-4 text-center fw-bold">Мои аренды</h2>
 
@@ -64,14 +75,20 @@
 import { ref, onMounted } from 'vue'
 import api from '../services/api'
 import { useStorage } from '@vueuse/core'
-import Swal from 'sweetalert2'
-import 'sweetalert2/dist/sweetalert2.min.css'
+import { useRouter } from 'vue-router'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 
 const rentals = ref([])
 const loading = ref(false)
+const message = ref({ text: '', type: '' })
 const token = useStorage('token', null)
+const router = useRouter()
+
+const showMessage = (text, type = 'success') => {
+  message.value = { text, type }
+  setTimeout(() => { message.value.text = '' }, 3000)
+}
 
 const loadRentals = async () => {
   loading.value = true
@@ -82,55 +99,24 @@ const loadRentals = async () => {
     rentals.value = data
   } catch (err) {
     console.error(err)
-    Swal.fire({
-      icon: 'error',
-      title: 'Ошибка',
-      text: err.response?.data?.message || 'Ошибка при загрузке ваших аренд',
-      confirmButtonColor: '#1f5bcc',
-      background: '#1b1f27',
-      color: '#fff'
-    })
+    showMessage(err.response?.data?.message || 'Ошибка при загрузке ваших аренд', 'error')
   } finally {
     loading.value = false
   }
 }
 
 const cancelRental = async (rentalId) => {
-  const confirmResult = await Swal.fire({
-    icon: 'warning',
-    title: 'Вы точно хотите отказаться от аренды?',
-    showCancelButton: true,
-    confirmButtonText: 'Да',
-    cancelButtonText: 'Отмена',
-    confirmButtonColor: '#dc2626',
-    cancelButtonColor: '#6c757d',
-    background: '#1b1f27',
-    color: '#fff'
-  })
-  if (!confirmResult.isConfirmed) return
+  if (!confirm) return
 
   try {
     await api.delete(`/rentals/${rentalId}`, {
       headers: { Authorization: `Bearer ${token.value}` }
     })
     rentals.value = rentals.value.filter(r => r.id !== rentalId)
-    Swal.fire({
-      icon: 'success',
-      title: 'Аренда отменена',
-      confirmButtonColor: '#1f5bcc',
-      background: '#1b1f27',
-      color: '#fff'
-    })
+    showMessage('Аренда отменена', 'success')
   } catch (err) {
     console.error(err)
-    Swal.fire({
-      icon: 'error',
-      title: 'Ошибка',
-      text: err.response?.data?.message || 'Ошибка при отмене аренды',
-      confirmButtonColor: '#1f5bcc',
-      background: '#1b1f27',
-      color: '#fff'
-    })
+    showMessage(err.response?.data?.message || 'Ошибка при отмене аренды', 'error')
   }
 }
 
@@ -168,7 +154,28 @@ const formatDate = (dateStr) => {
   min-height: 100vh;
   padding: 2rem;
   color: #e5e7eb;
+  position: relative;
 }
+
+
+.toast-message {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  z-index: 9999;
+  min-width: 250px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  pointer-events: none;
+  background: linear-gradient(135deg, #1b1f27, #0f1218);
+}
+.toast-message.success { border-left: 4px solid #2563eb; }
+.toast-message.error { border-left: 4px solid #dc3545; }
 
 .big-card {
   background: #1b1f27;

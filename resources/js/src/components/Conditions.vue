@@ -61,7 +61,7 @@ onMounted(async () => {
   color: #e5e7eb;
 }
 
-/* АКЦЕНТНАЯ ЛИНИЯ */
+
 .condition-card::before {
   content: "";
   position: absolute;
@@ -73,7 +73,7 @@ onMounted(async () => {
   background: linear-gradient(90deg, #2563eb, #1e40af);
 }
 
-/* HOVER */
+
 .condition-card:hover {
   transform: translateY(-10px);
   box-shadow:
@@ -81,7 +81,7 @@ onMounted(async () => {
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-/* ИКОНКА */
+
 .icon-wrap {
   width: 64px;
   height: 64px;
@@ -98,7 +98,7 @@ onMounted(async () => {
   box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
 }
 
-/* ЗАГОЛОВОК */
+
 .condition-card h5 {
   font-size: 1.1rem;
   font-weight: 700;

@@ -1,5 +1,5 @@
 <template>
-  <!-- АНИМАЦИЯ ПОЯВЛЕНИЯ ФОРМЫ -->
+  
   <transition name="form-fade-slide">
     <div class="review-form-card">
 
@@ -9,7 +9,7 @@
 
       <form @submit.prevent="submitReview">
 
-        <!-- Имя -->
+        
         <div class="mb-3">
           <label class="form-label">Ваше имя</label>
           <input
@@ -21,7 +21,7 @@
           />
         </div>
 
-        <!-- Рейтинг -->
+       
         <div class="mb-3">
           <label class="form-label">Оценка</label>
           <div class="rating-input">
@@ -36,7 +36,7 @@
           </div>
         </div>
 
-        <!-- Сообщение -->
+       
         <div class="mb-4">
           <label class="form-label">Отзыв</label>
           <textarea
@@ -58,7 +58,7 @@
     </div>
   </transition>
 
-  <!-- TOAST -->
+ 
   <transition name="toast-fade">
     <div v-if="showToast" class="toast-success">
       <i class="bi bi-check-circle"></i>
@@ -101,9 +101,7 @@ const submitReview = async () => {
 </script>
 
 <style scoped>
-/* ===================== */
-/* ФОРМА */
-/* ===================== */
+
 .review-form-card {
   max-width: 520px;
   margin: 0 auto;
@@ -146,9 +144,7 @@ const submitReview = async () => {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-/* ===================== */
-/* РЕЙТИНГ */
-/* ===================== */
+
 .rating-input {
   display: flex;
   gap: 8px;
@@ -169,9 +165,7 @@ const submitReview = async () => {
   transform: scale(1.2);
 }
 
-/* ===================== */
-/* КНОПКА */
-/* ===================== */
+
 .btn-primary {
   border-radius: 16px;
   padding: 12px 36px;
@@ -186,9 +180,7 @@ const submitReview = async () => {
   transform: translateY(-3px);
 }
 
-/* ===================== */
-/* АНИМАЦИЯ ФОРМЫ */
-/* ===================== */
+
 .form-fade-slide-enter-active {
   transition: all 0.45s ease;
 }
@@ -198,9 +190,7 @@ const submitReview = async () => {
   transform: translateY(30px) scale(0.97);
 }
 
-/* ===================== */
-/* TOAST */
-/* ===================== */
+
 .toast-success {
   position: fixed;
   bottom: 24px;
@@ -225,7 +215,7 @@ const submitReview = async () => {
   font-size: 1rem;
 }
 
-/* TOAST ANIMATION */
+
 .toast-fade-enter-active,
 .toast-fade-leave-active {
   transition: all 0.3s ease;

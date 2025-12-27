@@ -1,6 +1,6 @@
 <template>
   <div class="register-page d-flex justify-content-center align-items-center min-vh-100">
-    <!-- Уведомление -->
+    
     <div 
       v-if="message.text" 
       class="toast-message" 
@@ -92,7 +92,7 @@ const submit = async () => {
   position: relative;
 }
 
-/* Toast сообщение */
+
 .toast-message {
   position: fixed;
   top: 20px;
@@ -118,7 +118,7 @@ const submit = async () => {
   border-left: 4px solid #dc3545;
 }
 
-/* Карточка */
+
 .card {
   background: linear-gradient(160deg, #1b1f27, #0f1218);
   color: #e5e7eb;

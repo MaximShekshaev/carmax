@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <!-- Кнопка раскрытия -->
+    
     <div class="text-center mb-4" v-if="reviews.length > initialCount">
       <button
         class="btn btn-outline-primary px-4"
@@ -34,7 +34,7 @@
       </button>
     </div>
 
-    <!-- Форма -->
+    
     <div class="text-center" v-if="isLoggedIn">
       <button
         class="btn btn-outline-primary px-4 mb-4"

@@ -8,7 +8,7 @@ use App\Models\Rental;
 
 class RentalController extends Controller
 {
-    // Получение списка аренд пользователя
+    
     public function index(Request $request)
     {
         $token = $request->bearerToken(); 
@@ -25,7 +25,7 @@ class RentalController extends Controller
         return response()->json($rentals);
     }
 
-    // Создание аренды
+    
     public function store(Request $request)
     {
         $token = $request->bearerToken();

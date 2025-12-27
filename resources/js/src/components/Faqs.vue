@@ -81,7 +81,7 @@ onMounted(loadFaqs)
   width: 100%;
 }
 
-/* ===== FAQ ITEM ===== */
+
 .faq-item {
   background: linear-gradient(160deg, #1b1f27, #0f1218);
   border-radius: 1.25rem;
@@ -99,7 +99,7 @@ onMounted(loadFaqs)
     0 30px 60px rgba(37, 99, 235, 0.35);
 }
 
-/* ===== ВОПРОС ===== */
+
 .faq-question {
   cursor: pointer;
   display: flex;
@@ -113,7 +113,7 @@ onMounted(loadFaqs)
   color: #3b82f6;
 }
 
-/* ===== ИКОНКА ===== */
+
 .faq-icon {
   font-size: 1.25rem;
   color: #3b82f6;
@@ -124,7 +124,7 @@ onMounted(loadFaqs)
   transform: rotate(180deg);
 }
 
-/* ===== АНИМАЦИЯ ===== */
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.25s ease, max-height 0.25s ease;
@@ -136,13 +136,13 @@ onMounted(loadFaqs)
   max-height: 0;
 }
 
-/* ===== ОТВЕТ ===== */
+
 .faq-item .text-muted {
   color: #9ca3af !important;
   line-height: 1.6;
 }
 
-/* ===== КОНТАКТЫ ===== */
+
 .contact-panel {
   background: linear-gradient(160deg, #1b1f27, #0f1218);
   border-radius: 1.25rem;
@@ -167,7 +167,7 @@ onMounted(loadFaqs)
   color: #3b82f6;
 }
 
-/* ===== СОЦСЕТИ ===== */
+
 .contact-panel a {
   transition: transform 0.25s ease, color 0.25s ease;
 }
