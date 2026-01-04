@@ -1,5 +1,4 @@
 <template>
-  
   <div class="row g-4 mb-5">
     <div
       class="col-md-4"
@@ -12,8 +11,22 @@
         </div>
 
         <div class="car-content d-flex flex-column flex-grow-1">
-          <h5 class="fw-semibold mb-2 text-white">{{ car.brand }} {{ car.name }}</h5>
-          <p class=" small mb-3 flex-grow-1 text-white">{{ car.description }}</p>
+          <h5 class="fw-semibold mb-2 text-white">
+            {{ car.brand }} {{ car.name }}
+          </h5>
+          <p
+            class="small mb-2 flex-grow-1 text-white description"
+            :class="{ collapsed: !opened[car.id] }"
+          >
+            {{ car.description }}
+          </p>
+
+          <button
+            class="btn p-0 text-info small mb-3 align-self-start"
+            @click="toggle(car.id)"
+          >
+            {{ opened[car.id] ? 'Скрыть' : 'Характеристики' }}
+          </button>
 
           <div class="mt-auto">
             <div class="price-row mb-3">
@@ -39,7 +52,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 
 defineProps({
   cars: {
@@ -51,8 +64,13 @@ defineProps({
 const router = useRouter()
 const token = useStorage('token', null)
 
-
 const isLoggedIn = computed(() => !!token.value)
+
+const opened = reactive({})
+
+const toggle = (id) => {
+  opened[id] = !opened[id]
+}
 
 const rentCar = (carId) => {
   if (!isLoggedIn.value) {
@@ -64,6 +82,19 @@ const rentCar = (carId) => {
 </script>
 
 <style scoped>
+
+.description {
+  white-space: pre-line;
+  line-height: 1.5;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+  max-height: 999px;
+}
+
+.description.collapsed {
+  max-height: 0.1em;
+}
+
 .car-card {
   position: relative;
   border-radius: 22px;
@@ -80,14 +111,12 @@ const rentCar = (carId) => {
   height: 100%;
 }
 
-
 .car-card:hover {
   transform: translateY(-10px);
   box-shadow:
     0 30px 60px rgba(37, 99, 235, 0.35),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
-
 
 .image-wrap {
   height: 280px;
@@ -118,7 +147,6 @@ const rentCar = (carId) => {
   transform: scale(1.08);
 }
 
-
 .car-content {
   padding: 26px 24px;
   display: flex;
@@ -126,7 +154,6 @@ const rentCar = (carId) => {
   flex-grow: 1;
   color: #e5e7eb;
 }
-
 
 .car-content h5 {
   font-size: 1.15rem;
@@ -136,12 +163,10 @@ const rentCar = (carId) => {
   color: #ffffff;
 }
 
-
 .car-content p {
   color: #ffffff;
   line-height: 1.5;
 }
-
 
 .price-row {
   display: flex;
@@ -156,7 +181,6 @@ const rentCar = (carId) => {
   font-weight: 800;
   color: #3b82f6;
 }
-
 
 .btn-primary {
   background: linear-gradient(135deg, #2563eb, #1e40af);
@@ -173,7 +197,6 @@ const rentCar = (carId) => {
   box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
   transform: translateY(-2px);
 }
-
 
 button[disabled] {
   background: #1f2937;
