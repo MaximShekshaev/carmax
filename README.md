@@ -1,60 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## CARMAX — Веб-приложение аренды автомобилей
+CARMAX  — это веб-приложение для онлайн-аренды автомобилей, 
+разработанное в рамках курсового проекта. 
+Система включает пользовательскую часть для оформления аренды и административную панель для управления автопарком, 
+условиями аренды и контентом.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Проект реализован с использованием
+**Laravel** (backend) и **Vue.js** (frontend).
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Функциональные возможности
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+###  Пользовательская часть
+- Просмотр автопарка
+- Просмотр характеристик автомобилей
+- Просмотр условий аренды
+- Оформление аренды автомобиля
+- Просмотр активных аренд
+- Авторизация и выход из системы
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+###  Административная панель
+- Управление автомобилями (CRUD)
+- Управление условиями аренды
+- Управление FAQ
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+##  Используемые технологии
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Backend
+- **PHP 8.4**
+- **Laravel 12**
+- REST API
 
-## Laravel Sponsors
+### Frontend
+- **Vue 3**
+- Vue Router
+- Axios
+- Composition API
+- Адаптивная верстка
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### База данных
+- **MySQL**
 
-### Premium Partners
+## Архитектура проекта
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+Проект построен по **клиент-серверной архитектуре**:
+- Frontend (Vue) взаимодействует с backend через REST API
+- Backend (Laravel) обрабатывает бизнес-логику и работу с БД
 
-## Contributing
+### Установка и запуск проекта
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+ ## Установка зависимостей backend
+composer install
 
-## Code of Conduct
+## Установка зависимостей frontend
+npm install
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+ ## Настройка окружения
+cp .env.example .env
+php artisan key:generate
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Настрой подключение к базе данных в .env:
 
-## License
+DB_DATABASE=carmax
+DB_USERNAME=root
+DB_PASSWORD=
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-"# carmax" 
+## Миграции и сидеры
+php artisan migrate --seed
+
+## Сборка frontend
+npm run dev
+
+## Запуск сервера
+php artisan serve
+
+### Приложение будет доступно по адресу:
+http://127.0.0.1:8000
