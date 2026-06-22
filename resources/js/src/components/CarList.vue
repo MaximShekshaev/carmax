@@ -1,207 +1,300 @@
 <template>
-  <div class="row g-4 mb-5">
-    <div
-      class="col-md-4"
-      v-for="car in cars"
-      :key="car.id"
-    >
-      <div class="car-card d-flex flex-column h-100">
-        <div class="image-wrap">
-          <img :src="car.image" :alt="car.name" />
+  <div>
+
+    <!-- 🧊 FILTER PANEL -->
+    <div class="filter-panel mb-4">
+
+      <div class="filter-title">
+        Фильтры
+      </div>
+
+      <div class="row g-3 align-items-end">
+
+        <!-- SEARCH -->
+        <div class="col-md-4">
+          <label class="filter-label">Поиск</label>
+          <input
+            v-model="filters.search"
+            class="form-control modern-input"
+            placeholder="Бренд или модель..."
+          />
         </div>
 
-        <div class="car-content d-flex flex-column flex-grow-1">
-          <h5 class="fw-semibold mb-2 text-white">
-            {{ car.brand }} {{ car.name }}
-          </h5>
-          <p
-            class="small mb-2 flex-grow-1 text-white description"
-            :class="{ collapsed: !opened[car.id] }"
-          >
-            {{ car.description }}
-          </p>
+        <!-- MIN PRICE -->
+        <div class="col-md-3">
+          <label class="filter-label">Цена от</label>
+          <input
+            v-model.number="filters.minPrice"
+            type="number"
+            class="form-control modern-input"
+            placeholder="₸"
+          />
+        </div>
 
-          <button
-            class="btn p-0 text-info small mb-3 align-self-start"
-            @click="toggle(car.id)"
-          >
-            {{ opened[car.id] ? 'Скрыть' : 'Характеристики' }}
+        <!-- MAX PRICE -->
+        <div class="col-md-3">
+          <label class="filter-label">Цена до</label>
+          <input
+            v-model.number="filters.maxPrice"
+            type="number"
+            class="form-control modern-input"
+            placeholder="₸"
+          />
+        </div>
+
+        <!-- RESET -->
+        <div class="col-md-2 d-grid">
+          <button class="btn-reset" @click="resetFilters">
+            Сброс
           </button>
+        </div>
 
-          <div class="mt-auto">
-            <div class="price-row mb-3">
-              <span class="small">Цена:</span>
-              <span class="price">{{ car.price_per_day }} ₸ / сутки</span>
+      </div>
+
+      <!-- QUICK FILTER CHIPS -->
+      <div class="chips mt-3">
+        <button @click="setPrice(0, 20000)">до 20k</button>
+        <button @click="setPrice(20000, 50000)">20k - 50k</button>
+        <button @click="setPrice(50000, 100000)">50k+</button>
+      </div>
+
+    </div>
+
+    <!-- 🚗 CARS -->
+    <div class="row g-4">
+      <div
+        class="col-md-4"
+        v-for="car in filteredCars"
+        :key="car.id"
+      >
+
+        <div class="car-card">
+
+          <div class="image-wrap">
+            <img :src="car.image" />
+          </div>
+
+          <div class="car-content">
+
+            <h5 class="car-title">
+              {{ car.brand }}
+              <span>{{ car.name }}</span>
+            </h5>
+
+            <p class="desc">
+              {{ car.description }}
+            </p>
+
+            <div class="price-row">
+              <span>{{ car.price_per_day }} ₸ / сутки</span>
             </div>
 
-            <button
-              class="btn btn-primary w-100"
-              :disabled="!isLoggedIn"
-              @click="rentCar(car.id)"
-              :title="!isLoggedIn ? 'Войдите, чтобы арендовать' : ''"
-            >
+            <button class="btn-rent" @click="rentCar(car.id)">
               Арендовать
             </button>
+
           </div>
+
         </div>
+
       </div>
     </div>
+
   </div>
 </template>
 
 <script setup>
+import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStorage } from '@vueuse/core'
-import { computed, reactive } from 'vue'
 
-defineProps({
-  cars: {
-    type: Array,
-    required: true
-  }
+const props = defineProps({
+  cars: Array
 })
 
 const router = useRouter()
 const token = useStorage('token', null)
 
-const isLoggedIn = computed(() => !!token.value)
+const filters = reactive({
+  search: '',
+  minPrice: null,
+  maxPrice: null
+})
 
-const opened = reactive({})
+const filteredCars = computed(() => {
+  return props.cars.filter(car => {
 
-const toggle = (id) => {
-  opened[id] = !opened[id]
+    const s = filters.search.toLowerCase()
+
+    const matchSearch =
+      !s ||
+      car.brand.toLowerCase().includes(s) ||
+      car.name.toLowerCase().includes(s)
+
+    const matchMin =
+      !filters.minPrice || car.price_per_day >= filters.minPrice
+
+    const matchMax =
+      !filters.maxPrice || car.price_per_day <= filters.maxPrice
+
+    return matchSearch && matchMin && matchMax
+  })
+})
+
+const resetFilters = () => {
+  filters.search = ''
+  filters.minPrice = null
+  filters.maxPrice = null
 }
 
-const rentCar = (carId) => {
-  if (!isLoggedIn.value) {
-    router.push('/login')
-    return
-  }
-  router.push(`/rent/${carId}`)
+const setPrice = (min, max) => {
+  filters.minPrice = min
+  filters.maxPrice = max
+}
+
+const rentCar = (id) => {
+  if (!token.value) return router.push('/login')
+  router.push(`/rent/${id}`)
 }
 </script>
 
 <style scoped>
 
-.description {
-  white-space: pre-line;
-  line-height: 1.5;
-  overflow: hidden;
-  transition: max-height 0.35s ease;
-  max-height: 999px;
+/* 🌫 FILTER PANEL (GLASS EFFECT) */
+.filter-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.04);
 }
 
-.description.collapsed {
-  max-height: 0.1em;
+.filter-title {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 15px;
+  color: #111827;
 }
 
-.car-card {
-  position: relative;
-  border-radius: 22px;
-  overflow: hidden;
-  background: linear-gradient(160deg, #1b1f27, #0f1218);
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
+.filter-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* inputs */
+.modern-input {
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  transition: 0.2s;
+}
+
+.modern-input:focus {
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17,24,39,0.1);
+}
+
+/* reset button */
+.btn-reset {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.2s;
+}
+
+.btn-reset:hover {
+  background: #111827;
+  color: white;
+}
+
+/* chips */
+.chips {
   display: flex;
-  flex-direction: column;
-  height: 100%;
+  gap: 10px;
+}
+
+.chips button {
+  border: 1px solid #e5e7eb;
+  background: white;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  transition: 0.2s;
+}
+
+.chips button:hover {
+  background: #111827;
+  color: white;
+}
+
+/* CARDS */
+.car-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: white;
+  border: 1px solid #eee;
+  transition: 0.3s;
 }
 
 .car-card:hover {
-  transform: translateY(-10px);
-  box-shadow:
-    0 30px 60px rgba(37, 99, 235, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
 
 .image-wrap {
-  height: 280px;
+  height: 200px;
   overflow: hidden;
-  position: relative;
-}
-
-.image-wrap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 40%,
-    rgba(0, 0, 0, 0.6)
-  );
-  z-index: 1;
 }
 
 .image-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.45s ease;
-}
-
-.car-card:hover img {
-  transform: scale(1.08);
 }
 
 .car-content {
-  padding: 26px 24px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  color: #e5e7eb;
+  padding: 16px;
 }
 
-.car-content h5 {
-  font-size: 1.15rem;
+.car-title {
   font-weight: 700;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #ffffff;
+  font-size: 16px;
 }
 
-.car-content p {
-  color: #ffffff;
-  line-height: 1.5;
+.car-title span {
+  font-weight: 400;
+  color: #6b7280;
+}
+
+.desc {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 10px 0;
 }
 
 .price-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding-top: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
-.price {
-  font-size: 1.2rem;
-  font-weight: 800;
-  color: #3b82f6;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #2563eb, #1e40af);
+.btn-rent {
+  width: 100%;
+  background: #111827;
+  color: white;
   border: none;
-  border-radius: 14px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-  padding: 12px;
-  transition: all 0.3s ease;
+  padding: 10px;
+  border-radius: 10px;
+  transition: 0.3s;
 }
 
-.btn-primary:hover {
-  background: linear-gradient(135deg, #1e40af, #2563eb);
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
-  transform: translateY(-2px);
+.btn-rent:hover {
+  background: white;
+  color: #111827;
+  border: 1px solid #111827;
 }
 
-button[disabled] {
-  background: #1f2937;
-  color: #6b7280;
-  cursor: not-allowed;
-  opacity: 0.7;
-}
 </style>

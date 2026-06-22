@@ -1,23 +1,24 @@
 <template>
   <section class="conditions container py-5">
-    
-
     <div class="row g-4 text-center">
       <div
         class="col-md-3"
         v-for="item in conditions"
         :key="item.id"
       >
-        <div class="condition-card h-100">
-          <div class="icon-wrap mb-3">
+        <div class="condition-card h-100 p-4">
+          <!-- ОБЕРТКА ИКОНКИ -->
+          <div class="icon-wrap mb-4">
             <i :class="`bi ${item.icon}`"></i>
           </div>
 
-          <h5 class="fw-semibold mb-2">
+          <!-- ЗАГОЛОВОК -->
+          <h5 class="condition-title mb-2">
             {{ item.title }}
           </h5>
 
-          <p class=" mb-0 small">
+          <!-- ОПИСАНИЕ -->
+          <p class="condition-text mb-0 small">
             {{ item.description }}
           </p>
         </div>
@@ -43,73 +44,58 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
-
-
+/* --- КАРТОЧКА УСЛОВИЙ --- */
 .condition-card {
   position: relative;
-  height: 100%;
-  padding: 32px 26px;
-  border-radius: 22px;
-  background: linear-gradient(160deg, #1b1f27, #0f1218);
-  box-shadow:
-    0 15px 40px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-  transition:
-    transform 0.35s ease,
-    box-shadow 0.35s ease;
-  color: #e5e7eb;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-.condition-card::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 24px;
-  right: 24px;
-  height: 4px;
-  border-radius: 0 0 10px 10px;
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-}
-
-
+/* Ховер эффект карточки */
 .condition-card:hover {
-  transform: translateY(-10px);
-  box-shadow:
-    0 30px 60px rgba(37, 99, 235, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transform: translateY(-6px);
+  border-color: rgba(17, 24, 39, 0.12);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
 }
 
-
+/* --- ОБЕРТКА ИКОНКИ --- */
 .icon-wrap {
-  width: 64px;
-  height: 64px;
-  margin: 0 auto 18px;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  color: #ffffff;
-  font-size: 28px;
-
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.45);
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  font-size: 22px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-.condition-card h5 {
-  font-size: 1.1rem;
-  font-weight: 700;
+/* Анимация иконки при ховере на всю карточку */
+.condition-card:hover .icon-wrap {
+  background-color: #111827;
+  border-color: #111827;
   color: #ffffff;
-  letter-spacing: 0.4px;
+  transform: scale(1.05);
 }
 
-/* ТЕКСТ */
-.condition-card p {
-  color: #9ca3af;
+/* --- ТЕКСТ И ТИПОГРАФИКА --- */
+.condition-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #111827;
+  letter-spacing: -0.2px;
+}
+
+.condition-text {
+  color: #4b5563;
   line-height: 1.6;
+  font-size: 0.9rem;
 }
-
 </style>

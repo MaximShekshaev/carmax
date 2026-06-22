@@ -1,68 +1,65 @@
 <template>
-  
+  <!-- Анимация появления формы -->
   <transition name="form-fade-slide">
     <div class="review-form-card">
-
-      <h4 class="form-title mb-4 text-center">
-        Оставить отзыв
-      </h4>
+      <h4 class="form-title mb-4 text-center">Оставить отзыв</h4>
 
       <form @submit.prevent="submitReview">
-
-        
+        <!-- Поле: Имя -->
         <div class="mb-3">
-          <label class="form-label">Ваше имя</label>
+          <label class="form-label custom-label">Ваше имя</label>
           <input
             v-model="form.name"
             type="text"
-            class="form-control"
-            placeholder="Введите имя"
+            class="form-control light-input"
+            placeholder="Введите ваше имя"
             required
           />
         </div>
 
-       
+        <!-- Поле: Интерактивный рейтинг -->
         <div class="mb-3">
-          <label class="form-label">Оценка</label>
-          <div class="rating-input">
+          <label class="form-label custom-label">Оценка сервиса</label>
+          <div class="rating-container">
             <span
               v-for="i in 5"
               :key="i"
               @click="form.rating = i"
               :class="{ active: i <= form.rating }"
+              class="rating-star"
             >
               ★
             </span>
           </div>
         </div>
 
-       
+        <!-- Поле: Сообщение -->
         <div class="mb-4">
-          <label class="form-label">Отзыв</label>
+          <label class="form-label custom-label">Ваш отзыв</label>
           <textarea
             v-model="form.message"
             rows="4"
-            class="form-control"
-            placeholder="Поделитесь впечатлениями..."
+            class="form-control light-input"
+            placeholder="Поделитесь вашими впечатлениями от поездки..."
             required
           ></textarea>
         </div>
 
+        <!-- Кнопка отправки -->
         <div class="text-center">
-          <button class="btn btn-primary px-5">
+          <button class="btn btn-submit-review px-5 py-2.5">
             Отправить отзыв
           </button>
         </div>
-
       </form>
     </div>
   </transition>
 
- 
+  <!-- Кастомный Toast (Минималистичный стиль сверху) -->
   <transition name="toast-fade">
-    <div v-if="showToast" class="toast-success">
-      <i class="bi bi-check-circle"></i>
-      Отзыв отправлен
+    <div v-if="showToast" class="toast-success-badge">
+      <i class="bi bi-check-circle-fill text-success me-2"></i>
+      Отзыв успешно опубликован
     </div>
   </transition>
 </template>
@@ -92,7 +89,7 @@ const submitReview = async () => {
     form.message = ''
 
     showToast.value = true
-    setTimeout(() => (showToast.value = false), 2200)
+    setTimeout(() => (showToast.value = false), 2500)
 
   } catch (e) {
     console.error('Ошибка отправки отзыва', e)
@@ -101,129 +98,132 @@ const submitReview = async () => {
 </script>
 
 <style scoped>
-
+/* КАРТОЧКА ФОРМЫ (Светлый премиальный дизайн) */
 .review-form-card {
-  max-width: 520px;
+  max-width: 500px;
   margin: 0 auto;
-  padding: 36px 32px;
-  border-radius: 24px;
-
-  background: linear-gradient(160deg, #1b1f27, #0f1218);
-  box-shadow:
-    0 25px 60px rgba(0, 0, 0, 0.65),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-  color: #e5e7eb;
+  padding: 40px 35px;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+  color: #111827;
 }
 
 .form-title {
-  font-weight: 800;
-  letter-spacing: 0.6px;
-  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: #111827;
 }
 
-.form-label {
-  font-size: 0.9rem;
+/* СТИЛИЗАЦИЯ ЛАБЕЛОВ И ИНПУТОВ */
+.custom-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.light-input {
+  border-radius: 8px;
+  background-color: #f9fafb;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+
+.light-input::placeholder {
   color: #9ca3af;
 }
 
-.form-control {
-  background: #0b0f15;
-  border: 1px solid #1f2937;
-  color: #e5e7eb;
-  border-radius: 14px;
-  padding: 12px 16px;
+.light-input:focus {
+  box-shadow: none;
+  border-color: #111827;
+  background-color: #ffffff;
 }
 
-.form-control::placeholder {
-  color: #6b7280;
-}
-
-.form-control:focus {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-}
-
-
-.rating-input {
+/* ИНТЕРАКТИВНЫЙ РЕЙТИНГ (ЗВЕЗДЫ) */
+.rating-container {
   display: flex;
-  gap: 8px;
-  font-size: 26px;
+  gap: 6px;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.rating-star {
+  color: #e5e7eb;
   cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+  user-select: none;
 }
 
-.rating-input span {
-  color: #374151;
-  transition: 0.25s;
+.rating-star.active {
+  color: #f59e0b; /* Элегантный янтарный оттенок */
 }
 
-.rating-input span.active {
-  color: #facc15;
+.rating-star:hover {
+  transform: scale(1.15);
 }
 
-.rating-input span:hover {
-  transform: scale(1.2);
+/* КНОПКА ОТПРАВКИ ФОРМЫ */
+.btn-submit-review {
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid #111827;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-
-.btn-primary {
-  border-radius: 16px;
-  padding: 12px 36px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  border: none;
-  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
-  transition: 0.3s;
+.btn-submit-review:hover {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
 }
 
-.btn-primary:hover {
-  transform: translateY(-3px);
-}
-
-
-.form-fade-slide-enter-active {
-  transition: all 0.45s ease;
-}
-
-.form-fade-slide-enter-from {
-  opacity: 0;
-  transform: translateY(30px) scale(0.97);
-}
-
-
-.toast-success {
+/* ТОСТ УВЕДОМЛЕНИЯ (Минималистичный, всплывает сверху) */
+.toast-success-badge {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  z-index: 9999;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-bottom: 3px solid #10b981;
   display: flex;
   align-items: center;
-  gap: 8px;
-
-  padding: 10px 16px;
-  border-radius: 14px;
-
-  background: #111827;
-  color: #e5e7eb;
-  font-size: 0.85rem;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
 }
 
-.toast-success i {
-  color: #22c55e;
-  font-size: 1rem;
+/* АНИМАЦИИ VUE */
+.form-fade-slide-enter-active {
+  transition: all 0.4s ease;
 }
-
+.form-fade-slide-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
 
 .toast-fade-enter-active,
 .toast-fade-leave-active {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
 .toast-fade-enter-from,
 .toast-fade-leave-to {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translate(-50%, -15px);
 }
 </style>

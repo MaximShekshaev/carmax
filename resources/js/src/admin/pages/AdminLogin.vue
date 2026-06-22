@@ -1,48 +1,51 @@
 <template>
-  <div class="admin-login-page">
-    <div class="admin-login-card">
+  <div class="admin-login-page min-vh-100 d-flex align-items-center justify-content-center p-4">
+    
+    <div class="admin-login-card p-5">
       <h2 class="title">ADMIN PANEL</h2>
       <p class="subtitle">Вход для администратора</p>
 
       <form @submit.prevent="login" class="login-form">
-        <div class="form-group">
-          <label>Email</label>
+        <div class="form-group mb-3">
+          <label class="custom-label">Email</label>
           <input
             type="email"
             v-model="email"
             placeholder="admin@email.com"
+            class="form-control light-input"
             required
           />
         </div>
 
-        <div class="form-group">
-          <label>Пароль</label>
+        <div class="form-group mb-4">
+          <label class="custom-label">Пароль</label>
           <input
             type="password"
             v-model="password"
             placeholder="••••••••"
+            class="form-control light-input"
             required
           />
         </div>
 
+        <div v-if="error" class="error-alert p-3 mb-3 d-flex align-items-center">
+          <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+          <span>{{ error }}</span>
+        </div>
 
-        
-        <button type="submit" class="btn-login">
-          Войти
+        <button type="submit" class="btn btn-submit-admin w-100 py-3">
+          Войти в систему
         </button>
 
-         <button type="button" class="btn-login" @click="goHome">
-          Назад
-        </button>
-
-        <p v-if="error" class="error-message">
-          {{ error }}
-        </p>
+        <div class="text-center mt-4">
+          <button type="button" class="btn-back-link" @click="goHome">
+            <i class="bi bi-arrow-left me-2"></i>Вернуться на главную
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref } from 'vue'
@@ -64,7 +67,7 @@ const login = async () => {
     localStorage.setItem('admin_token', res.data.token)
     router.push('/admin')
   } catch {
-    error.value = 'Неверный логин или пароль'
+    error.value = 'Неверный логин или пароль администратора'
   }
 }
 
@@ -74,110 +77,128 @@ const goHome = () => {
 </script>
 
 <style scoped>
+/* СВЕТЛЫЙ ДИЗАЙН СТРАНИЦЫ */
 .admin-login-page {
-  min-height: 100vh;
-  background: radial-gradient(circle at top, #111827, #020617);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #f9fafb;
 }
 
-
+/* КАРТОЧКА */
 .admin-login-card {
   width: 100%;
-  max-width: 420px;
-  background: linear-gradient(160deg, #1b1f27, #0b0f16);
-  border-radius: 22px;
-  padding: 42px 36px;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  animation: fadeUp 0.6s ease;
+  max-width: 440px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.03);
+  animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-
+/* ЗАГОЛОВКИ */
 .title {
   text-align: center;
   font-weight: 800;
-  letter-spacing: 2px;
-  color: #ffffff;
-  margin-bottom: 6px;
+  font-size: 1.6rem;
+  letter-spacing: 1.5px;
+  color: #111827;
+  margin-bottom: 4px;
 }
 
 .subtitle {
   text-align: center;
   font-size: 0.9rem;
-  color: #9ca3af;
-  margin-bottom: 32px;
+  color: #6b7280;
+  margin-bottom: 35px;
 }
 
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.form-group label {
-  font-size: 0.85rem;
+/* ФОРМА И ЛАБЕЛЫ */
+.custom-label {
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #9ca3af;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
   margin-bottom: 6px;
   display: block;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 14px;
-  background: #020617;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #ffffff;
-  outline: none;
-  transition: border 0.3s, box-shadow 0.3s;
+/* МИНИМАЛИСТИЧНЫЕ ИНПУТЫ */
+.light-input {
+  border-radius: 8px;
+  background-color: #f9fafb;
+  color: #111827;
+  border: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
 }
 
-.form-group input::placeholder {
-  color: #6b7280;
+.light-input::placeholder {
+  color: #9ca3af;
 }
 
-.form-group input:focus {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.25);
+.light-input:focus {
+  box-shadow: none;
+  border-color: #111827;
+  background-color: #ffffff;
+  color: #111827;
 }
 
-/* КНОПКА */
-.btn-login {
-  margin-top: 10px;
-  padding: 14px;
-  border-radius: 16px;
-  border: none;
-  background: linear-gradient(135deg, #2563eb, #1e40af);
-  color: #ffffff;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.45);
-}
-
-/* ОШИБКА */
-.error-message {
-  margin-top: 10px;
-  text-align: center;
-  color: #ef4444;
+/* ОСНОВНАЯ МОНОХРОМНАЯ КНОПКА */
+.btn-submit-admin {
+  border-radius: 8px;
+  font-size: 1rem;
   font-weight: 600;
+  background: #111827;
+  color: #ffffff;
+  border: 1px solid #111827;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* АНИМАЦИЯ */
+.btn-submit-admin:hover {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/* КНОПКА НАЗАД В ВИДЕ ССЫЛКИ */
+.btn-back-link {
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7280;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-back-link:hover {
+  color: #111827;
+}
+
+.btn-back-link i {
+  transition: transform 0.2s ease;
+}
+
+.btn-back-link:hover i {
+  transform: translateX(-3px); /* Деликатный сдвиг стрелки назад */
+}
+
+/* СТИЛИЗАЦИЯ БЛОКА ОШИБКИ */
+.error-alert {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 8px;
+  color: #991b1b;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+/* КИНЕМАТОГРАФИЧНАЯ ПЛАВНАЯ АНИМАЦИЯ ПОЯВЛЕНИЯ КАРТОЧКИ */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(25px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
